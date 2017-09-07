@@ -1,6 +1,6 @@
 from automation import InvalidStateError
 from lexical_analyzer import LexicalAnalyzer, WrongWordError
-from transliterator import Transliterator, UnrecognizedSymbol
+from transliterator import UnrecognizedSymbol
 
 
 def main():

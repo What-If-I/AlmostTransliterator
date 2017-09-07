@@ -21,18 +21,12 @@ class LexicalAnalyzer:
         self.dig_automate.reset_state()
         self.word_automate.reset_state()
 
-    def next_symbol(self, symbol: literal):
-        if symbol.type in (CharTypesEnum.space, CharTypesEnum.end_row):
-            self.state = TstateEnum.finish
-        if symbol.type == CharTypesEnum.digit:
-            self.current_word += symbol
-        pass
-
     def analyze(self, string: str):
         cur_automate = None
         cur_word_type = None
         for char in string:
             symbol = self.transliterator.get_symbol(char)
+            # todo: Надо ли каждый раз подбирать верный автомат?
             if symbol.type == CharTypesEnum.digit:
                 cur_automate = self.dig_automate
                 cur_word_type = TToken.number
@@ -45,7 +39,7 @@ class LexicalAnalyzer:
                     self.current_word = ""
                     cur_automate.reset_state()
                 else:
-                    raise Exception("Неправильное слово!")
+                    raise WrongWordError("Неправильное слово!")
             elif symbol.type == CharTypesEnum.digit:
                 cur_automate.next_state(symbol.value)
                 self.current_word += char

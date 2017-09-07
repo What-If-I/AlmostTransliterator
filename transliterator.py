@@ -6,8 +6,20 @@ class UnrecognizedSymbol(Exception):
 
 
 class Transliterator:
+
     def __init__(self):
         self._result = []
+        self._type_checkers = self._get_type_checkers()
+
+    def _get_type_checkers(self):
+        return (
+            (self._is_char, CharTypesEnum.letter),
+            (self._is_number, CharTypesEnum.digit),
+            (self._is_reversed_symbol, CharTypesEnum.reserved_symbol),
+            (self._is_end_row, CharTypesEnum.end_row),
+            (self._is_space, CharTypesEnum.space),
+            (self._is_comment, CharTypesEnum.comment)
+        )
 
     def _is_identifier(self, char):
         pass
@@ -30,29 +42,12 @@ class Transliterator:
     def _is_comment(self, value):
         return value == '#'
 
-    def _add_to_result(self, value):
-        self._result.insert(0, value)
-
     def get_symbol(self, char):
-        symbol = None
+        for is_type, type_ in self._type_checkers:
+            if is_type(char):
+                return literal(char, type_)
 
-        if self._is_char(char):
-            symbol = literal(char, CharTypesEnum.letter)
-        elif self._is_number(char):
-            symbol = literal(char, CharTypesEnum.digit)
-        elif self._is_reversed_symbol(char):
-            symbol = literal(char, CharTypesEnum.reserved_symbol)
-        elif self._is_end_row(char):
-            symbol = literal(char, CharTypesEnum.end_row)
-        elif self._is_space(char):
-            symbol = literal(char, CharTypesEnum.space)
-        elif self._is_comment(char):
-            symbol = literal(char, CharTypesEnum.comment)
-
-        if not symbol:
-            raise UnrecognizedSymbol("Не удалось распознать символ.")
-
-        return symbol
+        raise UnrecognizedSymbol("Не удалось распознать символ.")
 
     @property
     def get_result(self):
