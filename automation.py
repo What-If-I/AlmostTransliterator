@@ -67,5 +67,15 @@ class Automation:
     def in_start_state(self):
         return self.current_state == self.start_state
 
-digit_automation = Automation(digit_states, DigitStates.A, (DigitStates.Fin,))
-word_automation = Automation(word_states, WordStates.A, (WordStates.BFin, WordStates.DFin))
+
+def automation_factory(*args, **kwargs):
+
+    def automation():
+        return Automation(*args, **kwargs)
+    return automation
+
+digit_automation = automation_factory(digit_states, DigitStates.A,
+                                      (DigitStates.Fin,))
+
+word_automation = automation_factory(word_states, WordStates.A,
+                                     (WordStates.BFin, WordStates.DFin))
