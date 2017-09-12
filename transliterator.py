@@ -18,7 +18,8 @@ class Transliterator:
             (self._is_reversed_symbol, CharTypesEnum.reserved_symbol),
             (self._is_end_row, CharTypesEnum.end_row),
             (self._is_space, CharTypesEnum.space),
-            (self._is_comment, CharTypesEnum.comment)
+            (self._is_comment, CharTypesEnum.comment),
+            (self._is_operator, CharTypesEnum.operator)
         )
 
     def _is_identifier(self, char):
@@ -28,7 +29,7 @@ class Transliterator:
         return char in ("0", "1")
 
     def _is_reversed_symbol(self, char):
-        return char in ":;,.(){}[]=><-+*/&\\'"
+        return char in ":;,.(){}[]=></&\\'"
 
     def _is_char(self, char):
         return char in ("a", "b", "c", "d")
@@ -41,6 +42,9 @@ class Transliterator:
 
     def _is_comment(self, value):
         return value == '#'
+
+    def _is_operator(self, value):
+        return value in ('+', '-', '*')
 
     def get_symbol(self, char):
         for is_type, type_ in self._type_checkers:

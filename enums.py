@@ -16,6 +16,7 @@ class CharTypesEnum(Enum):
     comment = enum.auto()
     space = enum.auto()
     reserved_symbol = enum.auto()
+    operator = enum.auto()
 
 
 class TToken(Enum):
