@@ -8,7 +8,6 @@ class UnrecognizedSymbol(Exception):
 class Transliterator:
 
     def __init__(self):
-        self._result = []
         self._type_checkers = self._get_type_checkers()
 
     def _get_type_checkers(self):
@@ -20,9 +19,6 @@ class Transliterator:
             (self._is_space, CharTypesEnum.space),
             (self._is_comment, CharTypesEnum.comment)
         )
-
-    def _is_identifier(self, char):
-        pass
 
     def _is_number(self, char):
         return char in ("0", "1")
@@ -48,10 +44,6 @@ class Transliterator:
                 return literal(char, type_)
 
         raise UnrecognizedSymbol("Не удалось распознать символ.")
-
-    @property
-    def get_result(self):
-        return self._result
 
     def analyze(self, text):
         for char in text:
