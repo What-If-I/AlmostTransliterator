@@ -12,8 +12,10 @@ def main():
             lexical_analyzer.analyze(text_to_analyze)
         except (WrongWordError, UnrecognizedSymbol, InvalidStateError):
             print("Ошибка: Неправильное слово!")
+            continue
         for word in lexical_analyzer.words:
             print(f"Слово {word.value} относится к типу {word.type}.")
+            continue
         analyzer = SyntaxAnalyzer()
         try:
             analyzer.analyze_tokens(lexical_analyzer.words)
